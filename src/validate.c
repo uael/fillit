@@ -6,30 +6,30 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:09 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/11 18:03:45 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/11 18:33:12 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-t_i32	main(void)
-{
-	t_ctx	ctx;
-	t_usz	i;
+#define BIT_AT(SET, X, Y, N) (((SET) >> (((X) * (N)) + (Y))) & 1)
 
-	FT_INIT(&ctx, t_ctx);
-	if (fillit_parse(&ctx,
-		"....\n"
-		"..##\n"
-		"..#.\n"
-		"..#.\n"
-	))
-	{
-		ft_putstr("error");
-		return (EXIT_FAILURE);
-	}
-	i = 0;
-	while (i < ctx.nelms)
-		ft_putnbr(fillit_validate(ctx.elms[i++]));
-	return (EXIT_SUCCESS);
+t_u08	fillit_validate(t_elm elm)
+{
+	t_i08 x;
+	t_i08 y;
+	t_u08 c;
+
+	c = 0;
+	x = -1;
+	while (++x < 4 && (y = -1) < 0)
+		while (++y < 4)
+			if (BIT_AT(elm, x, y, 4))
+			{
+				if (x < 3 && BIT_AT(elm, x + 1, y, 4))
+					++c;
+				if (y < 3 && BIT_AT(elm, x, y + 1, 4))
+					++c;
+			}
+	return ((t_u08)(c >= 3));
 }

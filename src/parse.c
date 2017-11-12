@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:09 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/12 13:00:25 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/12 16:28:05 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 #define BIT_AT(SET, X, Y, N) (((SET) >> (((X) * (N)) + (Y))) & 1)
 
-static t_u08	fillit_validate(t_elm elm)
+static t_u08	fillit_validate(t_u16 form)
 {
 	t_i08 x;
 	t_i08 y;
@@ -26,17 +26,37 @@ static t_u08	fillit_validate(t_elm elm)
 	x = -1;
 	while (++x < 4 && (y = -1) < 0)
 		while (++y < 4)
-			if (BIT_AT(elm, x, y, 4))
+			if (BIT_AT(form, x, y, 4))
 			{
-				if (x < 3 && BIT_AT(elm, x + 1, y, 4))
+				if (x < 3 && BIT_AT(form, x + 1, y, 4))
 					++c;
-				if (y < 3 && BIT_AT(elm, x, y + 1, 4))
+				if (y < 3 && BIT_AT(form, x, y + 1, 4))
 					++c;
 			}
 	return ((t_u08)(c < 3));
 }
 
-static t_u08	fillit_parse_elm(t_elm *elm, t_car **str)
+static t_u08	fillit_formbeg(t_u16 form)
+{
+	t_i32 x;
+	t_i32 y;
+	t_i32 i;
+
+	i = -1;
+	while (++i < 16)
+	{
+		x = (i % 4);
+		y = ((i - x) / 4);
+		while (x < 4)
+			if (BIT_AT(form, y, x++, 4))
+				while (y < 4)
+					if (BIT_AT(form, y++, (i % 4), 4))
+						return ((t_u08)i);
+	}
+	return (0);
+}
+
+static t_u08	fillit_parse_tetr(t_tetr *tetr, t_car **str)
 {
 	t_u08	i;
 	t_u08	n;
@@ -45,40 +65,43 @@ static t_u08	fillit_parse_elm(t_elm *elm, t_car **str)
 	if ((*str)[4] != '\n' || (*str)[9] != '\n' ||
 		(*str)[14] != '\n' || (*str)[19] != '\n')
 		return (1);
-	FT_INIT(elm, t_elm);
+	FT_INIT(tetr, t_tetr);
 	i = 0;
 	n = 0;
 	while (i < 16)
 		if ((c = *(*str)++) == '#' && ++n)
-			*elm |= 1 << i++;
+			tetr->form |= 1 << i++;
 		else if (c == '.')
 			++i;
 		else if (c != '\n')
 			return (1);
+	if (n > 4 || fillit_validate(tetr->form))
+		return (1);
 	while (**str == '\n')
 		++*str;
-	return ((t_u08)(n > 4 ? 1 : fillit_validate(*elm)));
+	tetr->form >>= fillit_formbeg(tetr->form);
+	return (0);
 }
 
 static t_u08	fillit_parse(t_ctx *ctx, t_dstr *str)
 {
-	t_elm	elm;
-	t_elm	*elms;
+	t_tetr	tetr;
+	t_tetr	*tetrs;
 	t_car	*buf;
 
-	if ((ctx->nelms = str->len + 1) % 21 != 0)
+	if ((ctx->ntetrs = str->len + 1) % 21 != 0)
 		return (1);
-	if (!(ctx->nelms /= 21) || ctx->nelms > 26)
+	if (!(ctx->ntetrs /= 21) || ctx->ntetrs > 26)
 		return (1);
-	if (!(ctx->elms = malloc(ctx->nelms * sizeof(t_elm))))
+	if (!(ctx->tetrs = malloc(ctx->ntetrs * sizeof(t_tetr))))
 		return (1);
 	buf = str->buf;
-	elms = ctx->elms;
+	tetrs = ctx->tetrs;
 	while (*buf)
 	{
-		if (fillit_parse_elm(&elm, &buf))
+		if (fillit_parse_tetr(&tetr, &buf))
 			return (1);
-		*elms++ = elm;
+		*tetrs++ = tetr;
 	}
 	return (0);
 }

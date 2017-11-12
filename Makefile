@@ -6,7 +6,7 @@
 #    By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/07 09:52:36 by alucas-           #+#    #+#              #
-#    Updated: 2017/11/12 12:05:24 by alucas-          ###   ########.fr        #
+#    Updated: 2017/11/12 13:54:57 by alucas-          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ FLAGS = -Wall -Wextra -Werror -O3 -Iinclude -Ivendor/libft -Lvendor/libft -lft
 CC = gcc
 SRCS = \
 	src/fillit.c \
-	src/parse.c
+	src/parse.c \
+	src/solve.c
 
 all: $(NAME)
 
@@ -26,10 +27,9 @@ $(NAME): libft
 	$(CC) $(FLAGS) -o $(NAME) $(SRCS)
 
 clean:
-	$(MAKE) -C vendor/libft clean
+	/bin/rm -f *.o
 
 fclean: clean
-	$(MAKE) -C vendor/libft fclean
 	/bin/rm -f $(NAME)
 
 re: fclean all

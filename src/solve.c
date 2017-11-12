@@ -1,37 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fillit.h                                           :+:      :+:    :+:   */
+/*   solve.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/11 17:01:05 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/12 14:10:50 by alucas-          ###   ########.fr       */
+/*   Created: 2017/11/12 13:54:26 by alucas-           #+#    #+#             */
+/*   Updated: 2017/11/12 15:48:07 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILLIT_H
-# define FILLIT_H
+#include "fillit.h"
 
-# include <libft.h>
+#define BIT_AT(SET, X, Y, N) (((SET) >> (((X) * (N)) + (Y))) & 1)
 
-typedef _Bool	t_bool;
-
-typedef struct	s_tetr
+t_u08	fillit_put(t_ctx *ctx, t_tetr *tetr)
 {
-	t_u16		form;
-	t_u08		x;
-	t_u08		y;
-}				t_tetr;
+	(void)ctx;
+	(void)tetr;
+	return (0);
+}
 
-typedef struct	s_ctx
+t_u08	fillit_solve(t_ctx *ctx)
 {
-	t_tetr		*tetrs;
-	t_usz		ntetrs;
-	t_bool		*taken;
-	t_usz		ntaken;
-}				t_ctx;
-
-extern t_u08	fillit_parse_file(t_ctx *ctx, t_car const *filename);
-
-#endif
+	(void)ctx;
+	return (0);
+}

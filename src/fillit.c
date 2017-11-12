@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:09 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/12 11:44:53 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/12 11:48:04 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_i32	main(t_i32 ac, t_car **av)
 	if (ac != 2)
 		return (ft_exit(EXIT_FAILURE, "usage: fillit source_file"));
 	FT_INIT(&ctx, t_ctx);
-	if (fillit_parse_file(&ctx, "map01"))
+	if (fillit_parse_file(&ctx, av[1]))
 		return (ft_exit(EXIT_FAILURE, "error"));
 	i = 0;
 	while (i < ctx.nelms)

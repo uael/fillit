@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:09 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/12 11:30:59 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/12 12:12:24 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static t_u08	fillit_parse_elm(t_elm *elm, t_dstr *str)
 			++i;
 		else if (c != '\n')
 			return (1);
-	if (*str->buf == '\n')
+	while (*str->buf == '\n')
 		++str->buf;
 	return ((t_u08)(n > 4 ? 1 : 0));
 }
@@ -46,7 +46,7 @@ t_u08			fillit_parse(t_ctx *ctx, t_dstr *str)
 	t_elm	*elms;
 	t_car	*buf;
 
-	if (!(ctx->nelms = str->len / 20))
+	if (!(ctx->nelms = str->len + 1 / 21))
 		return (1);
 	if (!(ctx->elms = malloc(ctx->nelms * sizeof(t_elm))))
 		return (1);

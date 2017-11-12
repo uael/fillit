@@ -18,12 +18,7 @@ t_i32	main(void)
 	t_usz	i;
 
 	FT_INIT(&ctx, t_ctx);
-	if (fillit_parse(&ctx,
-		"....\n"
-		"..##\n"
-		"..#.\n"
-		"..#.\n"
-	))
+	if (fillit_parse_file(&ctx, "map01"))
 	{
 		ft_putstr("error");
 		return (EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:09 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/12 16:30:28 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/12 16:31:06 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_i32		main(t_i32 ac, t_car **av)
 	if (fillit_parse_file(&ctx, av[1]))
 		return (ft_exit(EXIT_FAILURE, "error"));
 	i = 0;
-	while (++i < ctx.ntetrs)
+	while (i < ctx.ntetrs)
 	{
 		fillit_print(ctx.tetrs[i++].form);
 		ft_putchar('\n');

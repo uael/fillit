@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:09 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/12 12:12:24 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/12 13:00:25 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,51 +14,72 @@
 
 #include "fillit.h"
 
-static t_u08	fillit_parse_elm(t_elm *elm, t_dstr *str)
+#define BIT_AT(SET, X, Y, N) (((SET) >> (((X) * (N)) + (Y))) & 1)
+
+static t_u08	fillit_validate(t_elm elm)
+{
+	t_i08 x;
+	t_i08 y;
+	t_u08 c;
+
+	c = 0;
+	x = -1;
+	while (++x < 4 && (y = -1) < 0)
+		while (++y < 4)
+			if (BIT_AT(elm, x, y, 4))
+			{
+				if (x < 3 && BIT_AT(elm, x + 1, y, 4))
+					++c;
+				if (y < 3 && BIT_AT(elm, x, y + 1, 4))
+					++c;
+			}
+	return ((t_u08)(c < 3));
+}
+
+static t_u08	fillit_parse_elm(t_elm *elm, t_car **str)
 {
 	t_u08	i;
 	t_u08	n;
 	t_car	c;
 
-	if (str->len < 20)
-		return (1);
-	if (str->buf[4] != '\n' || str->buf[9] != '\n' ||
-		str->buf[14] != '\n' || str->buf[19] != '\n')
+	if ((*str)[4] != '\n' || (*str)[9] != '\n' ||
+		(*str)[14] != '\n' || (*str)[19] != '\n')
 		return (1);
 	FT_INIT(elm, t_elm);
 	i = 0;
 	n = 0;
 	while (i < 16)
-		if ((c = *str->buf++) == '#' && ++n)
+		if ((c = *(*str)++) == '#' && ++n)
 			*elm |= 1 << i++;
 		else if (c == '.')
 			++i;
 		else if (c != '\n')
 			return (1);
-	while (*str->buf == '\n')
-		++str->buf;
-	return ((t_u08)(n > 4 ? 1 : 0));
+	while (**str == '\n')
+		++*str;
+	return ((t_u08)(n > 4 ? 1 : fillit_validate(*elm)));
 }
 
-t_u08			fillit_parse(t_ctx *ctx, t_dstr *str)
+static t_u08	fillit_parse(t_ctx *ctx, t_dstr *str)
 {
 	t_elm	elm;
 	t_elm	*elms;
 	t_car	*buf;
 
-	if (!(ctx->nelms = str->len + 1 / 21))
+	if ((ctx->nelms = str->len + 1) % 21 != 0)
+		return (1);
+	if (!(ctx->nelms /= 21) || ctx->nelms > 26)
 		return (1);
 	if (!(ctx->elms = malloc(ctx->nelms * sizeof(t_elm))))
 		return (1);
 	buf = str->buf;
 	elms = ctx->elms;
-	while (*str->buf)
+	while (*buf)
 	{
-		if (fillit_parse_elm(&elm, str))
+		if (fillit_parse_elm(&elm, &buf))
 			return (1);
 		*elms++ = elm;
 	}
-	str->buf = buf;
 	return (0);
 }
 

@@ -15,8 +15,7 @@ FLAGS = -Wall -Wextra -Werror -O3 -Iinclude -Ivendor/libft -Lvendor/libft -lft
 CC = gcc
 SRCS = \
 	src/fillit.c \
-	src/parse.c \
-	src/validate.c
+	src/parse.c
 
 all: $(NAME)
 

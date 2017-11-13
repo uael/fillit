@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 13:54:26 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/13 15:30:38 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/13 15:41:29 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,10 @@ t_u08			fillit_solve(t_ctx *c)
 
 	FT_INIT(&s, t_solve_ctx);
 	s.n = 1;
+	if (!(s.map = malloc((c->n * 4) * (c->n * 4) * sizeof(t_car))))
+		return (1);
 	while (++s.n)
 	{
-		if (!(s.map = ft_memrealloc(s.map, 0,
-			((s.n * s.n) + 1) * sizeof(t_car))))
-			return (0);
 		ft_memset(s.map, '.', (s.n * s.n) * sizeof(t_car));
 		ft_memset(s.ok, 0, 26 * sizeof(t_u08));
 		s.map[s.n * s.n] = '\0';

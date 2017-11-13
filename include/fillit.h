@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:05 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/13 14:20:05 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/13 15:14:11 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef struct	s_ctx
 typedef struct	s_solve_ctx
 {
 	t_car		*map;
-	t_usz		i;
 	t_usz		n;
 	t_u08		ok[26];
 }				t_solve_ctx;

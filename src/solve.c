@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 13:54:26 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/13 17:33:28 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/13 17:52:17 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ static t_bool	fillit_solve_nx(t_tetrs *c, t_car *map, t_usz n, t_u08 *filled)
 	FT_INIT(&t, t_tetr);
 	while (j < c->len && filled[j])
 		++j;
-	t.bin = c->buf[j];
-	t.letter = (t_car)('A' + j);
 	if (j == c->len)
 		return (1);
+	t.bin = c->buf[j];
+	t.letter = (t_car)('A' + j);
 	i = 0;
 	while (i < (n * n))
 		if (fillit_put(map, n, t, i++) && (filled[j] = 1))

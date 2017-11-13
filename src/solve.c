@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 13:54:26 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/13 15:22:51 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/13 15:22:57 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,6 @@ t_u08			fillit_solve(t_ctx *c)
 		if (fillit_solve_x(c, s))
 			break ;
 	}
+	free(s.map);
 	return (0);
 }

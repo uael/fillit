@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:05 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/13 17:08:22 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/13 17:26:15 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <libft.h>
 
-typedef _Bool	t_bool;
+typedef t_u08	t_bool;
 
 typedef struct	s_tetr
 {

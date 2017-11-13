@@ -27,9 +27,11 @@ $(NAME): libft
 	$(CC) $(FLAGS) -o $(NAME) $(SRCS)
 
 clean:
+	$(MAKE) -C vendor/libft clean
 	/bin/rm -f *.o
 
 fclean: clean
+	$(MAKE) -C vendor/libft fclean
 	/bin/rm -f $(NAME)
 
 re: fclean all

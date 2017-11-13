@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 13:54:26 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/13 14:27:37 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/13 14:38:57 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,19 +96,19 @@ static t_bool	fillit_solve_x(t_ctx *c, t_solve_ctx s)
 
 t_u08			fillit_solve(t_ctx *c)
 {
-	t_solve_ctx	sctx;
+	t_solve_ctx	s;
 
-	FT_INIT(&sctx, t_solve_ctx);
-	sctx.n = 1;
-	while (++sctx.n)
+	FT_INIT(&s, t_solve_ctx);
+	s.n = 1;
+	while (++s.n)
 	{
-		if (!(sctx.map = ft_memrealloc(sctx.map, 0,
-			((sctx.n * sctx.n) + 1) * sizeof(t_car))))
+		if (!(s.map = ft_memrealloc(s.map, 0,
+			((s.n * s.n) + 1) * sizeof(t_car))))
 			return (0);
-		ft_memset(sctx.map, '.', (sctx.n * sctx.n) * sizeof(t_car));
-		ft_memset(sctx.ok, 0, 26 * sizeof(t_u08));
-		sctx.map[sctx.n * sctx.n] = '\0';
-		if (fillit_solve_x(c, sctx))
+		ft_memset(s.map, '.', (s.n * s.n) * sizeof(t_car));
+		ft_memset(s.ok, 0, 26 * sizeof(t_u08));
+		s.map[s.n * s.n] = '\0';
+		if (fillit_solve_x(c, s))
 			break ;
 	}
 	return (0);

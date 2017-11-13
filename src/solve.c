@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 13:54:26 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/13 17:08:11 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/13 17:33:28 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,42 +52,28 @@ static t_bool	fillit_put(t_car *map, t_usz n, t_tetr t, t_usz i)
 	return (0);
 }
 
-static t_tetr	fillit_next(t_tetrs *c, t_u08 const *filled)
-{
-	t_tetr	t;
-	t_u08	i;
-
-	i = 0;
-	FT_INIT(&t, t_tetr);
-	while (i < c->len)
-	{
-		if (!filled[i])
-		{
-			t.bin = c->buf[i];
-			t.letter = (t_car)('A' + i);
-			break ;
-		}
-		++i;
-	}
-	return (t);
-}
-
 static t_bool	fillit_solve_nx(t_tetrs *c, t_car *map, t_usz n, t_u08 *filled)
 {
 	t_usz	i;
+	t_u08	j;
 	t_tetr	t;
 
-	if (!(t = fillit_next(c, filled)).bin)
+	j = 0;
+	FT_INIT(&t, t_tetr);
+	while (j < c->len && filled[j])
+		++j;
+	t.bin = c->buf[j];
+	t.letter = (t_car)('A' + j);
+	if (j == c->len)
 		return (1);
 	i = 0;
 	while (i < (n * n))
-		if (fillit_put(map, n, t, i++))
+		if (fillit_put(map, n, t, i++) && (filled[j] = 1))
 		{
-			filled[t.letter - 'A'] = 1;
 			if (fillit_solve_nx(c, map, n, filled))
 				return (1);
 			fillit_rem(map, n, t.letter);
-			filled[t.letter - 'A'] = 0;
+			filled[j] = 0;
 		}
 	return (0);
 }

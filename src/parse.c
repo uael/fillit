@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:09 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/13 12:00:13 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/13 16:39:51 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,30 +87,30 @@ static t_u08	fillit_parse_tetr(t_u16 *tetr, t_car **str)
 	return (0);
 }
 
-static t_u08	fillit_parse(t_ctx *ctx, t_dstr *str)
+static t_u08	fillit_parse_str(t_tetrs *tetrs, t_dstr *str)
 {
 	t_u16	tetr;
-	t_u16	*tetrs;
+	t_u16	*tbuf;
 	t_car	*buf;
 
-	if ((ctx->n = str->len + 1) % 21 != 0)
+	if ((tetrs->len = str->len + 1) % 21 != 0)
 		return (1);
-	if (!(ctx->n /= 21) || ctx->n > 26)
+	if (!(tetrs->len /= 21) || tetrs->len > 26)
 		return (1);
-	if (!(ctx->tetrs = malloc(ctx->n * sizeof(t_u16))))
+	if (!(tetrs->buf = malloc(tetrs->len * sizeof(t_u16))))
 		return (1);
 	buf = str->buf;
-	tetrs = ctx->tetrs;
+	tbuf = tetrs->buf;
 	while (*buf)
 	{
 		if (fillit_parse_tetr(&tetr, &buf))
 			return (1);
-		*tetrs++ = tetr;
+		*tbuf++ = tetr;
 	}
 	return (0);
 }
 
-t_u08			fillit_parse_file(t_ctx *ctx, t_car const *filename)
+t_u08			fillit_parse(t_tetrs *tetrs, t_car const *filename)
 {
 	t_i32	fd;
 	t_dstr	buf;
@@ -128,7 +128,7 @@ t_u08			fillit_parse_file(t_ctx *ctx, t_car const *filename)
 			ft_dstrpushncpy(&buf, sbuf, (t_usz)r);
 	if (close(fd) < 0 || !buf.len)
 		return (1);
-	ret = fillit_parse(ctx, &buf);
+	ret = fillit_parse_str(tetrs, &buf);
 	ft_dstrdtor(&buf);
 	return (ret);
 }

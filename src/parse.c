@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:09 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/13 10:19:45 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/13 10:24:27 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void		fillit_format(t_tetr *tetr)
 	tetr->form >>= (x * 4) + y;
 }
 
-static t_u08	fillit_parse_tetr(t_tetr *tetr, t_car **str)
+static t_u08	fillit_parse_tetr(t_tetr *tetr, t_car **str, t_car letter)
 {
 	t_u08	i;
 	t_u08	n;
@@ -84,6 +84,7 @@ static t_u08	fillit_parse_tetr(t_tetr *tetr, t_car **str)
 	while (**str == '\n')
 		++*str;
 	fillit_format(tetr);
+	tetr->letter = letter;
 	return (0);
 }
 
@@ -92,6 +93,7 @@ static t_u08	fillit_parse(t_ctx *ctx, t_dstr *str)
 	t_tetr	tetr;
 	t_tetr	*tetrs;
 	t_car	*buf;
+	t_car	letter;
 
 	if ((ctx->ntetrs = str->len + 1) % 21 != 0)
 		return (1);
@@ -101,9 +103,10 @@ static t_u08	fillit_parse(t_ctx *ctx, t_dstr *str)
 		return (1);
 	buf = str->buf;
 	tetrs = ctx->tetrs;
+	letter = 'A';
 	while (*buf)
 	{
-		if (fillit_parse_tetr(&tetr, &buf))
+		if (fillit_parse_tetr(&tetr, &buf, letter++))
 			return (1);
 		*tetrs++ = tetr;
 	}

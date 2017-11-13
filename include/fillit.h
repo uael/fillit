@@ -22,6 +22,7 @@ typedef struct	s_tetr
 	t_u16		form;
 	t_u08		x;
 	t_u08		y;
+	t_car		letter;
 }				t_tetr;
 
 typedef struct	s_ctx

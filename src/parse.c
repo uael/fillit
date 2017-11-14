@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:09 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/14 14:22:57 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/14 14:38:45 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,31 +68,13 @@ static uint8_t	fillit_parse_tetr(uint16_t *tetr, char **str)
 	return (0);
 }
 
-static uint8_t	fillit_parse_str(t_tetrs *tetrs, char *str, size_t len)
-{
-	uint16_t	tetr;
-	uint16_t	*buf;
-
-	if (!(tetrs->len = (len + 1) / 21) || tetrs->len > 26)
-		return (1);
-	if (!(tetrs->buf = malloc(tetrs->len * sizeof(uint16_t))))
-		return (1);
-	buf = tetrs->buf;
-	while (*str)
-	{
-		if (fillit_parse_tetr(&tetr, &str))
-			return (1);
-		*buf++ = tetr;
-	}
-	return (0);
-}
-
 uint8_t			fillit_parse(t_tetrs *tetrs, char const *filename)
 {
-	int32_t	fd;
-	char	buf[MAP_MAX_SIZE + 1];
-	uint8_t	ret;
-	ssize_t	r;
+	int32_t		fd;
+	char		buf[MAP_MAX_SIZE + 1];
+	char		*str;
+	ssize_t		r;
+	uint16_t	*tetr;
 
 	if ((fd = open(filename, O_RDONLY)) <= 0)
 		return (1);
@@ -101,6 +83,14 @@ uint8_t			fillit_parse(t_tetrs *tetrs, char const *filename)
 	buf[r] = '\0';
 	if (close(fd) < 0 || (r + 1) % 21)
 		return (1);
-	ret = fillit_parse_str(tetrs, buf, (size_t)r);
-	return (ret);
+	if (!(tetrs->len = ((size_t)r + 1) / 21) || tetrs->len > 26)
+		return (1);
+	if (!(tetrs->buf = malloc(tetrs->len * sizeof(uint16_t))))
+		return (1);
+	tetr = tetrs->buf;
+	str = buf;
+	while (*str)
+		if (fillit_parse_tetr(tetr++, &str))
+			return (1);
+	return (0);
 }

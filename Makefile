@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = fillit
-FLAGS = -Wall -Wextra -Werror -O3 -Iinclude -Ivendor/libft -Lvendor/libft -lft
+FLAGS = -Wall -Wextra -Werror -O3 -Iinclude -Ilib -Llib -lft
 CC = gcc
 SRCS = \
 	src/fillit.c \
@@ -21,17 +21,17 @@ SRCS = \
 all: $(NAME)
 
 libft:
-	$(MAKE) -C vendor/libft
+	$(MAKE) -C lib
 
 $(NAME): libft
 	$(CC) $(FLAGS) -o $(NAME) $(SRCS)
 
 clean:
-	$(MAKE) -C vendor/libft clean
+	$(MAKE) -C lib clean
 	/bin/rm -f *.o
 
 fclean: clean
-	$(MAKE) -C vendor/libft fclean
+	$(MAKE) -C lib fclean
 	/bin/rm -f $(NAME)
 
 re: fclean all

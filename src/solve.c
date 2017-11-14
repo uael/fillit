@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 13:54:26 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/14 14:49:51 by ssabbah          ###   ########.fr       */
+/*   Updated: 2017/11/14 15:02:40 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,15 @@ static t_bool	fillit_doit(t_tetrs *tetrs, char *map, size_t n, uint8_t *fill)
 	return (0);
 }
 
-static int		fillit_minsquare(int nb_tetros)
+static size_t	fillit_minsquare(size_t n)
 {
-	int	i;
-	int nb;
+	size_t i;
+	size_t nb;
 
-	nb = nb_tetros;
-	i = 2;
-	if (nb_tetros == 1)
+	if (n == 1)
 		return (2);
+	nb = n;
+	i = 2;
 	nb = nb * 4;
 	while (i * i < nb)
 		i++;
@@ -95,7 +95,7 @@ size_t			fillit_solve(t_tetrs *tetrs, char **map)
 	size_t	n;
 	uint8_t	fill[26];
 
-	n = fillit_minsquare(tetrs->len);
+	n = fillit_minsquare(tetrs->len) - 1;
 	if (!(*map = malloc((tetrs->len * 4) * (tetrs->len * 4) * sizeof(char))))
 		return (1);
 	while (++n)

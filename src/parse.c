@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:09 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/14 08:04:38 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/14 13:43:51 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 #define MAP_MAX_SIZE (26 * 21)
 #define BIT_AT(SET, X, Y, N) (((SET) >> (((X) * (N)) + (Y))) & 1)
 
-static t_u08	fillit_validate(t_u16 tetr)
+static uint8_t	fillit_validate(uint16_t tetr)
 {
-	t_i08 x;
-	t_i08 y;
-	t_u08 c;
-	t_u08 n;
+	int8_t	x;
+	int8_t	y;
+	uint8_t	c;
+	uint8_t	n;
 
 	c = 0;
 	n = 0;
@@ -37,18 +37,18 @@ static t_u08	fillit_validate(t_u16 tetr)
 				if (y < 3 && BIT_AT(tetr, x, y + 1, 4))
 					++c;
 			}
-	return ((t_u08)(c < 3 || n != 4));
+	return ((uint8_t)(c < 3 || n != 4));
 }
 
-static t_u08	fillit_parse_tetr(t_u16 *tetr, t_car **str)
+static uint8_t	fillit_parse_tetr(uint16_t *tetr, char **str)
 {
-	t_u08	i;
-	t_car	c;
+	uint8_t	i;
+	char	c;
 
 	if ((*str)[4] != '\n' || (*str)[9] != '\n' ||
 		(*str)[14] != '\n' || (*str)[19] != '\n')
 		return (1);
-	FT_INIT(tetr, t_u16);
+	FT_INIT(tetr, uint16_t);
 	i = 0;
 	while (i < 16)
 		if ((c = *(*str)++) == '#')
@@ -68,14 +68,14 @@ static t_u08	fillit_parse_tetr(t_u16 *tetr, t_car **str)
 	return (0);
 }
 
-static t_u08	fillit_parse_str(t_tetrs *tetrs, t_car *str, t_usz len)
+static uint8_t	fillit_parse_str(t_tetrs *tetrs, char *str, size_t len)
 {
-	t_u16	tetr;
-	t_u16	*buf;
+	uint16_t	tetr;
+	uint16_t	*buf;
 
 	if (!(tetrs->len = (len + 1) / 21) || tetrs->len > 26)
 		return (1);
-	if (!(tetrs->buf = malloc(tetrs->len * sizeof(t_u16))))
+	if (!(tetrs->buf = malloc(tetrs->len * sizeof(uint16_t))))
 		return (1);
 	buf = tetrs->buf;
 	while (*str)
@@ -87,12 +87,11 @@ static t_u08	fillit_parse_str(t_tetrs *tetrs, t_car *str, t_usz len)
 	return (0);
 }
 
-t_u08			fillit_parse(t_tetrs *tetrs, t_car const *filename)
+uint8_t			fillit_parse(t_tetrs *tetrs, char const *filename)
 {
-	t_i32	fd;
-	t_car	*str;
-	t_car	buf[MAP_MAX_SIZE + 1];
-	t_u08	ret;
+	int32_t	fd;
+	char	buf[MAP_MAX_SIZE + 1];
+	uint8_t	ret;
 	ssize_t	r;
 
 	if ((fd = open(filename, O_RDONLY)) <= 0)
@@ -100,12 +99,8 @@ t_u08			fillit_parse(t_tetrs *tetrs, t_car const *filename)
 	if ((r = read(fd, buf, MAP_MAX_SIZE + 1)) < 0 || r > MAP_MAX_SIZE)
 		return (1);
 	buf[r] = '\0';
-	if ((r + 1) % 21 || !(str = malloc((size_t)(r + 1) * sizeof(t_car))))
+	if (close(fd) < 0 || (r + 1) % 21)
 		return (1);
-	if (close(fd) < 0)
-		return (1);
-	ft_strcpy(str, buf);
-	ret = fillit_parse_str(tetrs, str, (size_t)r);
-	free(str);
+	ret = fillit_parse_str(tetrs, buf, (size_t)r);
 	return (ret);
 }

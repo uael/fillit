@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:05 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/13 17:26:15 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/14 13:30:33 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,23 @@
 # define FILLIT_H
 
 # include <libft.h>
+# include <stdint.h>
 
-typedef t_u08	t_bool;
+typedef uint8_t	t_bool;
 
 typedef struct	s_tetr
 {
-	t_u16		bin;
-	t_car		letter;
+	uint16_t	bin;
+	char		letter;
 }				t_tetr;
 
 typedef struct	s_tetrs
 {
-	t_u16		*buf;
-	t_usz		len;
+	uint16_t	*buf;
+	size_t		len;
 }				t_tetrs;
 
-extern t_u08	fillit_parse(t_tetrs *tetrs, t_car const *filename);
-extern t_usz	fillit_solve(t_tetrs *c, t_car **map);
+extern uint8_t	fillit_parse(t_tetrs *tetrs, char const *filename);
+extern size_t	fillit_solve(t_tetrs *tetrs, char **map);
 
 #endif

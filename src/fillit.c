@@ -6,29 +6,18 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/11 17:01:09 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/13 16:46:47 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/14 13:30:33 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-static void	fillit_print(t_car *m, t_usz n)
-{
-	t_usz i;
-
-	i = 0;
-	while (i < n)
-	{
-		write(1, m + (i++ * n), n);
-		ft_putchar('\n');
-	}
-}
-
-t_i32		main(t_i32 ac, t_car **av)
+int	main(int ac, char **av)
 {
 	t_tetrs	tetrs;
-	t_car	*map;
-	t_usz	n;
+	char	*map;
+	size_t	n;
+	size_t	i;
 
 	if (ac != 2)
 	{
@@ -42,7 +31,10 @@ t_i32		main(t_i32 ac, t_car **av)
 		return (EXIT_FAILURE);
 	}
 	n = fillit_solve(&tetrs, &map);
-	fillit_print(map, n);
+	i = 0;
+	while (i < n && write(1, map + (i++ * n), n))
+		ft_putchar('\n');
 	free(map);
+	free(tetrs.buf);
 	return (EXIT_SUCCESS);
 }

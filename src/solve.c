@@ -6,7 +6,7 @@
 /*   By: alucas- <alucas-@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/12 13:54:26 by alucas-           #+#    #+#             */
-/*   Updated: 2017/11/13 17:52:17 by alucas-          ###   ########.fr       */
+/*   Updated: 2017/11/14 13:27:42 by alucas-          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,8 @@
 
 #define BIT_AT(SET, X, Y, N) (((SET) >> (((X) * (N)) + (Y))) & 1)
 
-static void		fillit_rem(t_car *map, t_usz n, t_car letter)
+static void		fillit_rem(char *map, size_t n, char letter, size_t i)
 {
-	t_usz i;
-
-	i = 0;
 	while (i < (n * n))
 	{
 		if (map[i] == letter)
@@ -27,13 +24,13 @@ static void		fillit_rem(t_car *map, t_usz n, t_car letter)
 	}
 }
 
-static t_bool	fillit_put(t_car *map, t_usz n, t_tetr t, t_usz i)
+static t_bool	fillit_put(char *map, size_t n, t_tetr t, size_t i)
 {
 	ssize_t	x;
 	ssize_t	y;
-	t_usz	dx;
-	t_usz	dy;
-	t_u08	c;
+	size_t	dx;
+	size_t	dy;
+	uint8_t	c;
 
 	c = 0;
 	y = -1;
@@ -48,50 +45,50 @@ static t_bool	fillit_put(t_car *map, t_usz n, t_tetr t, t_usz i)
 			}
 	if (c == 4)
 		return (1);
-	fillit_rem(map, n, t.letter);
+	fillit_rem(map, n, t.letter, i);
 	return (0);
 }
 
-static t_bool	fillit_solve_nx(t_tetrs *c, t_car *map, t_usz n, t_u08 *filled)
+static t_bool	fillit_doit(t_tetrs *tetrs, char *map, size_t n, uint8_t *fill)
 {
-	t_usz	i;
-	t_u08	j;
+	size_t	i;
+	uint8_t	j;
 	t_tetr	t;
 
 	j = 0;
 	FT_INIT(&t, t_tetr);
-	while (j < c->len && filled[j])
+	while (j < tetrs->len && fill[j])
 		++j;
-	if (j == c->len)
+	if (j == tetrs->len)
 		return (1);
-	t.bin = c->buf[j];
-	t.letter = (t_car)('A' + j);
+	t.bin = tetrs->buf[j];
+	t.letter = (char)('A' + j);
 	i = 0;
 	while (i < (n * n))
-		if (fillit_put(map, n, t, i++) && (filled[j] = 1))
+		if (fillit_put(map, n, t, i++) && (fill[j] = 1))
 		{
-			if (fillit_solve_nx(c, map, n, filled))
+			if (fillit_doit(tetrs, map, n, fill))
 				return (1);
-			fillit_rem(map, n, t.letter);
-			filled[j] = 0;
+			fillit_rem(map, n, t.letter, i - 1);
+			fill[j] = 0;
 		}
 	return (0);
 }
 
-t_usz			fillit_solve(t_tetrs *c, t_car **map)
+size_t			fillit_solve(t_tetrs *tetrs, char **map)
 {
-	t_usz	n;
-	t_u08	filled[26];
+	size_t	n;
+	uint8_t	fill[26];
 
 	n = 1;
-	if (!(*map = malloc((c->len * 4) * (c->len * 4) * sizeof(t_car))))
+	if (!(*map = malloc((tetrs->len * 4) * (tetrs->len * 4) * sizeof(char))))
 		return (1);
 	while (++n)
 	{
-		ft_memset(*map, '.', (n * n) * sizeof(t_car));
-		ft_memset(filled, 0, 26 * sizeof(t_u08));
+		ft_memset(*map, '.', (n * n) * sizeof(char));
+		ft_memset(fill, 0, 26 * sizeof(uint8_t));
 		(*map)[n * n] = '\0';
-		if (fillit_solve_nx(c, *map, n, filled))
+		if (fillit_doit(tetrs, *map, n, fill))
 			break ;
 	}
 	return (n);

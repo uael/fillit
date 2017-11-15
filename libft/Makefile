@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = libft.a
-FLAGS = -Wall -Wextra -Werror -O3
+FLAGS = -Wall -Wextra -Werror
 CC = gcc
 OBJ = \
 	ft_atoi.o \

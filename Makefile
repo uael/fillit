@@ -11,12 +11,6 @@
 # **************************************************************************** #
 
 NAME = fillit
-
-NOC=\033[0m
-OKC=\033[32m
-ERC=\033[31m
-WAC=\033[33m
-
 CC = gcc
 CC_FLAGS = -Wall -Werror -Wextra
 
@@ -35,26 +29,21 @@ SRC_NAME = fillit.c parse.c solve.c
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	@echo
-	@make -C $(LFT_PATH)
-	@$(CC) -o $(NAME) $(OBJ) -L$(LFT_PATH) -lft
-	@echo "$(OKC)FILLIT:\t\tFillit ready$(NOC)"
+	make -C $(LFT_PATH)
+	$(CC) -o $(NAME) $(OBJ) -L$(LFT_PATH) -lft
 
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
-	@mkdir -p $(OBJ_PATH)
-	@$(CC) $(CC_FLAGS) $(INC) -o $@ -c $<
-	@echo -n =
+	mkdir -p $(OBJ_PATH)
+	$(CC) $(CC_FLAGS) $(INC) -o $@ -c $<
 
 clean:
-	@make -C $(LFT_PATH) clean
-	@rm -rf $(OBJ_PATH)
-	@echo "$(WAC)FILLIT:\t\tRemoving OBJ path: ./obj/$(NOC)"
+	make -C $(LFT_PATH) clean
+	rm -rf $(OBJ_PATH)
 
 fclean: clean
-	@make -C $(LFT_PATH) fclean
-	@rm -f $(NAME)
-	@echo "$(WAC)FILLIT:\t\tRemoving fillit executable$(NOC)"
+	make -C $(LFT_PATH) fclean
+	rm -f $(NAME)
 
 re: fclean all
 
